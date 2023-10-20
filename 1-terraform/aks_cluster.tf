@@ -10,14 +10,13 @@ resource "azurerm_kubernetes_cluster" "aks_k2" {
   dns_prefix          = var.dns_name
   kubernetes_version  = var.kubernetes_version
 
-  dynamic "agent_pool_profile" {
+  dynamic "default_node_pool" {
     for_each = var.agent_pools
     iterator = pool
     content {
-      name            = pool.value.name
-      count           = pool.value.count
+    name            = pool.value.name
+      node_count           = pool.value.count
       vm_size         = pool.value.vm_size
-      os_type         = pool.value.os_type
       os_disk_size_gb = pool.value.os_disk_size_gb
       type            = "VirtualMachineScaleSets"
       max_pods        = 100
@@ -36,13 +35,7 @@ resource "azurerm_kubernetes_cluster" "aks_k2" {
     network_plugin     = "azure"
     network_policy     = "azure"     # Options are calico or azure - only if network plugin is set to azure
     dns_service_ip     = "172.16.0.10" # Required when network plugin is set to azure, must be in the range of service_cidr and above 1
-    docker_bridge_cidr = "172.17.0.1/16"
     service_cidr       = "172.16.0.0/16" # Must not overlap any address from the VNEt
-  }
-
-
-  role_based_access_control {
-    enabled = true
   }
 
   service_principal {

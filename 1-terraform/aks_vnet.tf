@@ -12,7 +12,7 @@ resource "azurerm_subnet" "aks_subnet" {
   name                 = "aks_subnet"
   resource_group_name  = azurerm_resource_group.aks_demo_rg.name
   virtual_network_name = azurerm_virtual_network.aks_vnet.name
-  address_prefix       = "10.1.0.0/16"
+  address_prefixes      = ["10.1.0.0/16"]
 }
 
 #Role Assignment to give AKS the access to VNET - Required for Advanced Networking
