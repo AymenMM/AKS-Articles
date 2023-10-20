@@ -41,7 +41,9 @@ stages:
     # track deployments on the environment
   - deployment: Deploy_Terraform
     pool:
-      vmImage: 'ubuntu-latest'
+    name: az-amz-pool
+    demands:
+      - agent.name -equals DESKTOP-VBUKVDP
     # creates an environment if it doesn’t exist
     environment: 'DEV'
     strategy:
